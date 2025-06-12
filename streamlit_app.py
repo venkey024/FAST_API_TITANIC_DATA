@@ -379,15 +379,15 @@ if model:
                 help="Select passenger's gender"
             )
             sex = 1 if sex == "Male" else 0
-            
-            age = st.number_input(
+              age = st.number_input(
                 "Age",
                 min_value=0.0,
                 max_value=100.0,
                 value=25.0,
                 help="Enter passenger's age"
             )
-              sibsp = st.number_input(
+            
+            sibsp = st.number_input(
                 "Number of Siblings/Spouses",
                 min_value=0,
                 max_value=10,
