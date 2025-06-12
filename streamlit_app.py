@@ -27,6 +27,26 @@ st.markdown("""
             text-align: center;
             margin-bottom: 2rem;
         }
+        .sidebar .element-container h1 {
+            color: #1E88E5;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .sidebar .element-container h2 {
+            color: #2962FF;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .sidebar .element-container h3 {
+            color: #0D47A1;
+            font-size: 1.2rem;
+        }
+        .metric-container {
+            background-color: #E3F2FD;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
         .stButton>button {
             width: 100%;
             background-color: #1E88E5;
@@ -192,19 +212,13 @@ if df is not None:
               * Better group coordination
               * Mutual support during crisis
             """)
-            
-            # Show the detailed numbers
-            col1, col2 = st.columns(2)
-            with col1:
+              # Show the optimal family size for survival
+            with st.container():
+                st.markdown('<div class="metric-container">', unsafe_allow_html=True)
                 best_parch = parch_analysis.loc[parch_analysis['mean'].idxmax()]
-                st.metric("Best Survival Rate", 
-                         f"{best_parch['mean']:.1f}%",
-                         f"{best_parch['Parch']} family members")
-            with col2:
-                most_common = parch_analysis.loc[parch_analysis['count'].idxmax()]
-                st.metric("Most Common",
-                         f"{most_common['Parch']} family members",
-                         f"{most_common['count']} passengers")
+                st.metric("✨ Optimal Family Size", 
+                         f"{best_parch['Parch']} parents/children",
+                         f"Survival Rate: {best_parch['mean']:.1f}%")
 
         # Original statistics
         st.subheader("📈 General Statistics")
