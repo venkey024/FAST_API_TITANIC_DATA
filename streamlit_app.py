@@ -478,7 +478,7 @@ if model:
                                  barmode="overlay",
                                  color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
                                  template='plotly_white',
-                                 opacity=0.8)
+                                 opacity=0.8
                 
                 fig.update_layout(
                     plot_bgcolor='white',
