@@ -470,15 +470,15 @@ if model:
                 st.error(f"Error making prediction: {str(e)}")
         else:
             # Show some visualizations when no prediction is made
-            if df is not None:
-                st.markdown("### 📈 Survival Analysis")
-                  # Age distribution plot                fig = px.histogram(df, x="Age", color="Survived", 
+            if df is not None:                st.markdown("### 📈 Survival Analysis")
+                # Age distribution plot
+                fig = px.histogram(df, x="Age", color="Survived", 
                                  title="Age Distribution by Survival",
                                  labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
                                  barmode="overlay",
                                  color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
                                  template='plotly_white',
-                                 opacity=0.8
+                                 opacity=0.8)
                 
                 fig.update_layout(
                     plot_bgcolor='white',
