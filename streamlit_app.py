@@ -232,12 +232,12 @@ df = load_dataset()
 if df is not None:
     with st.sidebar:
         st.header("📊 Dataset Statistics")
-        
-        # Feature Importance
+          # Feature Importance
         if model is not None:
-            st.subheader("🎯 Feature Importance")            importance_df = get_feature_importance(model, df)
+            st.subheader("🎯 Feature Importance")
+            importance_df = get_feature_importance(model, df)
             # Create a horizontal bar chart for feature importance
-            fig = px.bar(importance_df, 
+            fig = px.bar(importance_df,
                 x='Importance', 
                 y='Feature',
                 orientation='h',
@@ -274,7 +274,9 @@ if df is not None:
             # Calculate survival rate by class
             class_survival = df.groupby('Pclass')['Survived'].agg(['mean', 'count']).reset_index()
             class_survival['mean'] = class_survival['mean'] * 100
-            class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})            # Create a bar chart with survival rates
+            class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})
+            
+            # Create a bar chart with survival rates
             fig = px.bar(class_survival, 
                 x='Pclass', 
                 y='mean',
@@ -470,7 +472,8 @@ if model:
                 st.error(f"Error making prediction: {str(e)}")
         else:
             # Show some visualizations when no prediction is made
-            if df is not None:                st.markdown("### 📈 Survival Analysis")
+            if df is not None:
+                st.markdown("### 📈 Survival Analysis")
                 # Age distribution plot
                 fig = px.histogram(df, x="Age", color="Survived", 
                                  title="Age Distribution by Survival",
@@ -514,7 +517,8 @@ if model:
                 fig = px.bar(survival_by_class, 
                            title="Survival Rate by Passenger Class",
                            labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"},
-                           color=survival_by_class.values,                           color_continuous_scale=['#E0F4FF', '#87CEEB', '#4682B4'],
+                           color=survival_by_class.values,
+                           color_continuous_scale=['#E0F4FF', '#87CEEB', '#4682B4'],
                            template='plotly_white')
                 
                 fig.update_layout(
