@@ -183,16 +183,16 @@ if df is not None:
             # Calculate survival rate by class
             class_survival = df.groupby('Pclass')['Survived'].agg(['mean', 'count']).reset_index()
             class_survival['mean'] = class_survival['mean'] * 100
-            class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})
-              # Create a bar chart with survival rates            fig = px.bar(class_survival, 
-                        x='Pclass', 
-                        y='mean',
-                        text=class_survival['mean'].round(1).astype(str) + '%',
-                        title='Survival Rate by Passenger Class',
-                        labels={'mean': 'Survival Rate (%)', 'Pclass': 'Passenger Class'},
-                        color='mean',
-                        color_continuous_scale=['#E1F5FE', '#81D4FA', '#03A9F4'],
-                        template='plotly_white')
+            class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})            # Create a bar chart with survival rates
+            fig = px.bar(class_survival, 
+                x='Pclass', 
+                y='mean',
+                text=class_survival['mean'].round(1).astype(str) + '%',
+                title='Survival Rate by Passenger Class',
+                labels={'mean': 'Survival Rate (%)', 'Pclass': 'Passenger Class'},
+                color='mean',
+                color_continuous_scale=['#E1F5FE', '#81D4FA', '#03A9F4'],
+                template='plotly_white')
             
             fig.update_traces(textposition='outside')
             st.plotly_chart(fig, use_container_width=True)
@@ -211,15 +211,15 @@ if df is not None:
             # Calculate survival rate by parch
             parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()
             parch_analysis['mean'] = parch_analysis['mean'] * 100
-            
-            # Create visualization for survival rate by parch            fig = px.bar(parch_analysis, 
-                        x='Parch', 
-                        y='mean',
-                        text=parch_analysis['mean'].round(1).astype(str) + '%',
-                        title='Survival Rate by Number of Parents/Children',
-                        labels={'Parch': 'Number of Parents/Children', 'mean': 'Survival Rate (%)'},
-                        color='mean',
-                        color_continuous_scale=['#E0F7FA', '#80DEEA', '#00BCD4'])
+              # Create visualization for survival rate by parch
+            fig = px.bar(parch_analysis, 
+                x='Parch', 
+                y='mean',
+                text=parch_analysis['mean'].round(1).astype(str) + '%',
+                title='Survival Rate by Number of Parents/Children',
+                labels={'Parch': 'Number of Parents/Children', 'mean': 'Survival Rate (%)'},
+                color='mean',
+                color_continuous_scale=['#E0F7FA', '#80DEEA', '#00BCD4'])
             
             fig.update_traces(textposition='outside')
             fig.update_layout(height=400)
