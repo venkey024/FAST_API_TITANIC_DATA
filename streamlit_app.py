@@ -18,14 +18,19 @@ st.markdown("""
     <style>
         .main {
             padding: 2rem;
+            background-color: #F5F9FF;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #EFF6FF;
         }
         .title-container {
-            background-color: #1E88E5;
+            background: linear-gradient(135deg, #48CAE4 0%, #023E8A 100%);
             padding: 2rem;
             border-radius: 10px;
             color: white;
             text-align: center;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .sidebar .element-container h1 {
             color: #1E88E5;
@@ -67,12 +72,24 @@ st.markdown("""
         .survival-false {
             background-color: #dc3545;
             color: white;
-        }
-        .stats-box {
-            background-color: #f8f9fa;
+        }        .stats-box {
+            background-color: white;
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        [data-testid="stAppViewContainer"] {
+            background-color: #F5F9FF;
+        }
+        .element-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+        .stApp {
+            background: linear-gradient(135deg, #F5F9FF 0%, #EFF6FF 100%);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -137,20 +154,27 @@ if df is not None:
         # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)
-            
-            # Create horizontal bar chart for feature importance
+            importance_df = get_feature_importance(model, df)            # Create horizontal bar chart for feature importance
             fig = px.bar(importance_df, 
                         x='Importance', 
                         y='Feature',
                         orientation='h',
-                        title='Feature Importance in Survival Prediction')
+                        title='Feature Importance in Survival Prediction',
+                        color='Importance',
+                        color_continuous_scale=['#E3F2FD', '#90CAF9', '#2196F3'],
+                        template='plotly_white')
             
             fig.update_layout(
                 xaxis_title="Importance Score",
                 yaxis_title="Feature",
-                height=400
+                height=400,
+                plot_bgcolor='white',
+                paper_bgcolor='white',
+                showlegend=False
             )
+            fig.update_traces(marker_line_color='rgb(8,48,107)',
+                            marker_line_width=1.5,
+                            opacity=0.8)
             st.plotly_chart(fig, use_container_width=True)
             
             # Detailed analysis of passenger class
@@ -160,14 +184,15 @@ if df is not None:
             class_survival = df.groupby('Pclass')['Survived'].agg(['mean', 'count']).reset_index()
             class_survival['mean'] = class_survival['mean'] * 100
             class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})
-            
-            # Create a bar chart with survival rates
-            fig = px.bar(class_survival, 
+              # Create a bar chart with survival rates            fig = px.bar(class_survival, 
                         x='Pclass', 
                         y='mean',
                         text=class_survival['mean'].round(1).astype(str) + '%',
                         title='Survival Rate by Passenger Class',
-                        labels={'mean': 'Survival Rate (%)', 'Pclass': 'Passenger Class'})
+                        labels={'mean': 'Survival Rate (%)', 'Pclass': 'Passenger Class'},
+                        color='mean',
+                        color_continuous_scale=['#E1F5FE', '#81D4FA', '#03A9F4'],
+                        template='plotly_white')
             
             fig.update_traces(textposition='outside')
             st.plotly_chart(fig, use_container_width=True)
@@ -187,15 +212,14 @@ if df is not None:
             parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()
             parch_analysis['mean'] = parch_analysis['mean'] * 100
             
-            # Create visualization for survival rate by parch
-            fig = px.bar(parch_analysis, 
+            # Create visualization for survival rate by parch            fig = px.bar(parch_analysis, 
                         x='Parch', 
                         y='mean',
                         text=parch_analysis['mean'].round(1).astype(str) + '%',
                         title='Survival Rate by Number of Parents/Children',
                         labels={'Parch': 'Number of Parents/Children', 'mean': 'Survival Rate (%)'},
                         color='mean',
-                        color_continuous_scale='Blues')
+                        color_continuous_scale=['#E0F7FA', '#80DEEA', '#00BCD4'])
             
             fig.update_traces(textposition='outside')
             fig.update_layout(height=400)
@@ -357,19 +381,56 @@ if model:
             # Show some visualizations when no prediction is made
             if df is not None:
                 st.markdown("### 📈 Survival Analysis")
-                
-                # Age distribution plot
+                  # Age distribution plot
                 fig = px.histogram(df, x="Age", color="Survived", 
                                  title="Age Distribution by Survival",
                                  labels={"Survived": "Survival Status"},
-                                 barmode="overlay")
-                st.plotly_chart(fig, use_container_width=True)
+                                 barmode="overlay",
+                 color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
+                                 template='plotly_white',
+                                 opacity=0.8)
                 
-                # Survival rate by class
+                fig.update_layout(
+                    plot_bgcolor='white',
+                    paper_bgcolor='white',
+                    legend_title_text="Survival Status",
+                    legend=dict(
+                        yanchor="top",
+                        y=0.99,
+                        xanchor="left",
+                        x=0.01,
+                        bgcolor='rgba(255, 255, 255, 0.8)'
+                    ),
+                    xaxis=dict(gridcolor='lightgray'),
+                    yaxis=dict(gridcolor='lightgray')
+                )
+                
+                # Update legend labels
+                fig.data[0].name = 'Did Not Survive'
+                fig.data[1].name = 'Survived'
+                st.plotly_chart(fig, use_container_width=True)
+                  # Survival rate by class
                 survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
                 fig = px.bar(survival_by_class, 
                            title="Survival Rate by Passenger Class",
-                           labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"})
+                           labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"},
+                           color=survival_by_class.values,                           color_continuous_scale=['#E0F4FF', '#87CEEB', '#4682B4'],
+                           template='plotly_white')
+                
+                fig.update_layout(
+                    plot_bgcolor='white',
+                    paper_bgcolor='white',
+                    xaxis=dict(gridcolor='lightgray'),
+                    yaxis=dict(gridcolor='lightgray')
+                )
+                
+                fig.update_traces(
+                    marker_line_color='rgb(8,48,107)',
+                    marker_line_width=1.5,
+                    opacity=0.8,
+                    text=survival_by_class.round(1).astype(str) + '%',
+                    textposition='outside'
+                )
                 st.plotly_chart(fig, use_container_width=True)
 
 else:
