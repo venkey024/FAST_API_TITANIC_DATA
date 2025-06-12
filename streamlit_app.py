@@ -242,7 +242,8 @@ if df is not None:
         # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance
+            importance_df = get_feature_importance(model, df)
+            # Create a horizontal bar chart for feature importance
             fig = px.bar(importance_df,
                 x='Importance', 
                 y='Feature',
@@ -374,8 +375,7 @@ if model:
                 options=[1, 2, 3],
                 help="1 = 1st Class, 2 = 2nd Class, 3 = 3rd Class"
             )
-            
-            sex = st.selectbox(
+              sex = st.selectbox(
                 "Sex",
                 options=["Female", "Male"],
                 help="Select passenger's gender"
@@ -399,7 +399,8 @@ if model:
                 step=1,
                 help="Number of siblings or spouses aboard"
             )
-              parch = st.number_input(
+            
+            parch = st.number_input(
                 "Number of Parents/Children",
                 min_value=0,
                 max_value=10,
@@ -412,7 +413,6 @@ if model:
                 "Fare ($)",
                 min_value=0.0,
                 value=32.0,
-                step=1.0,
                 help="Passenger fare"
             )
 
@@ -485,8 +485,8 @@ if model:
             if df is not None:
                 st.markdown("### 📈 Survival Analysis")
                 # Age distribution plot                fig = px.histogram(df, x="Age", color="Survived", 
-                    title="Age Distribution by Survival",
-                    labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
+                                 title="Age Distribution by Survival",
+                                 labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
                                  barmode="overlay",
                                  color_discrete_map={0: '#E53935', 1: '#43A047'},
                                  template='plotly_white',
@@ -521,8 +521,7 @@ if model:
                 fig.data[0].name = 'Did Not Survive'
                 fig.data[1].name = 'Survived'
                 st.plotly_chart(fig, use_container_width=True)
-                # Survival rate by class
-                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
+                  # Survival rate by class                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
                 fig = px.bar(survival_by_class, 
                            title="Survival Rate by Passenger Class",
                            labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"},
