@@ -88,12 +88,9 @@ def load_dataset():
         return None
 
 @st.cache_data
-def get_feature_importance(model, df):
+def get_feature_importance(importance_scores):
     # Get feature names
     feature_names = ['Passenger Class', 'Sex', 'Age', 'Siblings/Spouses', 'Parents/Children', 'Fare']
-    
-    # Get feature importance scores
-    importance_scores = model.feature_importances_
     
     # Create a DataFrame
     importance_df = pd.DataFrame({
@@ -117,7 +114,9 @@ if df is not None:
         # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)
+            # Get feature importance scores from model first
+            importance_scores = model.feature_importances_
+            importance_df = get_feature_importance(importance_scores)
             
             # Create horizontal bar chart for feature importance
             fig = px.bar(importance_df, 
