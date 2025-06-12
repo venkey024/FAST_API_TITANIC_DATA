@@ -19,9 +19,11 @@ st.markdown("""
         .main {
             padding: 2rem;
             background-color: #F5F9FF;
+            color: #1A237E;
         }
         [data-testid="stSidebar"] {
             background-color: #EFF6FF;
+            color: #1A237E;
         }
         .title-container {
             background: linear-gradient(135deg, #48CAE4 0%, #023E8A 100%);
@@ -51,6 +53,7 @@ st.markdown("""
             padding: 1rem;
             border-radius: 8px;
             margin: 1rem 0;
+            color: #1A237E;
         }
         .stButton>button {
             width: 100%;
@@ -72,24 +75,61 @@ st.markdown("""
         .survival-false {
             background-color: #dc3545;
             color: white;
-        }        .stats-box {
+        }
+        .stats-box {
             background-color: white;
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1rem 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            color: #1A237E;
         }
         [data-testid="stAppViewContainer"] {
             background-color: #F5F9FF;
+            color: #1A237E;
         }
         .element-container {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 1rem;
             border-radius: 8px;
             margin: 0.5rem 0;
+            color: #1A237E;
         }
         .stApp {
             background: linear-gradient(135deg, #F5F9FF 0%, #EFF6FF 100%);
+            color: #1A237E;
+        }
+        /* Improve text contrast */
+        .main, .stApp {
+            color: #1A237E !important;
+        }
+        /* Ensure text is visible in all containers */
+        .element-container, .stats-box, .metric-container {
+            color: #1A237E !important;
+        }
+        /* Style for form labels and text inputs */
+        .stTextInput label, .stTextInput input,
+        .stNumberInput label, .stNumberInput input,
+        .stSelectbox label, .stSelectbox > div[data-baseweb="select"] > div {
+            color: #1A237E !important;
+        }
+        /* Ensure plot titles and labels are visible */
+        .js-plotly-plot .plotly .gtitle,
+        .js-plotly-plot .plotly .xtitle,
+        .js-plotly-plot .plotly .ytitle {
+            color: #1A237E !important;
+        }
+        /* Additional styles for better text visibility */
+        .stMarkdown strong, .stMarkdown em {
+            color: #1A237E !important;
+        }
+        /* Table text visibility */
+        .dataframe th {
+            color: #1A237E !important;
+            background-color: #E3F2FD !important;
+        }
+        .dataframe td {
+            color: #1A237E !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -154,7 +194,7 @@ if df is not None:
         # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)            # Create horizontal bar chart for feature importance
+            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance
             fig = px.bar(importance_df, 
                         x='Importance', 
                         y='Feature',
