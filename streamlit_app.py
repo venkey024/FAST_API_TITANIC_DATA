@@ -52,13 +52,22 @@ st.markdown("""
             border-radius: 8px;
             margin: 1rem 0;
             color: #000000;
-        }
-        .stButton>button {
+        }        .stButton>button {
             width: 100%;
             background-color: #1976D2;
             color: white;
             font-weight: bold;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .stButton>button:hover {
+            background-color: #1565C0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
         }
         .prediction-box {
             padding: 2rem;
@@ -103,18 +112,29 @@ st.markdown("""
         /* Ensure text is visible in all containers */
         .element-container, .stats-box, .metric-container {
             color: #000000 !important;
-        }
-        /* Style for form labels and text inputs */
+        }        /* Style for form labels and text inputs */
         .stTextInput label, .stTextInput input,
         .stNumberInput label, .stNumberInput input,
         .stSelectbox label, .stSelectbox > div[data-baseweb="select"] > div {
             color: #000000 !important;
+            font-weight: 500 !important;
+            font-size: 1rem !important;
+        }
+        .stSelectbox > div[data-baseweb="select"] {
+            background-color: #FFFFFF !important;
+            border: 1px solid #90CAF9 !important;
+        }
+        /* Make dropdown text darker */
+        .stSelectbox [data-baseweb="select"] span {
+            color: #000000 !important;
+            font-weight: 500 !important;
         }
         /* Ensure plot titles and labels are visible */
         .js-plotly-plot .plotly .gtitle,
         .js-plotly-plot .plotly .xtitle,
         .js-plotly-plot .plotly .ytitle {
             color: #000000 !important;
+            font-weight: 600 !important;
         }
         /* Additional styles for better text visibility */
         .stMarkdown strong, .stMarkdown em {
@@ -216,8 +236,7 @@ if df is not None:
         # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance
-            fig = px.bar(importance_df, 
+            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance            fig = px.bar(importance_df, 
                         x='Importance', 
                         y='Feature',
                         orientation='h',
@@ -232,7 +251,16 @@ if df is not None:
                 height=400,
                 plot_bgcolor='white',
                 paper_bgcolor='white',
-                showlegend=False
+                showlegend=False,
+                title_font=dict(size=20, color='#000000'),
+                xaxis=dict(
+                    title_font=dict(size=14, color='#000000'),
+                    tickfont=dict(size=12, color='#000000')
+                ),
+                yaxis=dict(
+                    title_font=dict(size=14, color='#000000'),
+                    tickfont=dict(size=12, color='#000000')
+                )
             )
             fig.update_traces(marker_line_color='rgb(8,48,107)',
                             marker_line_width=1.5,
@@ -443,12 +471,11 @@ if model:
             # Show some visualizations when no prediction is made
             if df is not None:
                 st.markdown("### 📈 Survival Analysis")
-                  # Age distribution plot
-                fig = px.histogram(df, x="Age", color="Survived", 
+                  # Age distribution plot                fig = px.histogram(df, x="Age", color="Survived", 
                                  title="Age Distribution by Survival",
-                                 labels={"Survived": "Survival Status"},
+                                 labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
                                  barmode="overlay",
-                 color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
+                                 color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
                                  template='plotly_white',
                                  opacity=0.8)
                 
@@ -461,10 +488,20 @@ if model:
                         y=0.99,
                         xanchor="left",
                         x=0.01,
-                        bgcolor='rgba(255, 255, 255, 0.8)'
+                        bgcolor='rgba(255, 255, 255, 0.8)',
+                        font=dict(size=12, color='#000000')
                     ),
-                    xaxis=dict(gridcolor='lightgray'),
-                    yaxis=dict(gridcolor='lightgray')
+                    title_font=dict(size=20, color='#000000'),
+                    xaxis=dict(
+                        title_font=dict(size=14, color='#000000'),
+                        tickfont=dict(size=12, color='#000000'),
+                        gridcolor='lightgray'
+                    ),
+                    yaxis=dict(
+                        title_font=dict(size=14, color='#000000'),
+                        tickfont=dict(size=12, color='#000000'),
+                        gridcolor='lightgray'
+                    )
                 )
                 
                 # Update legend labels
