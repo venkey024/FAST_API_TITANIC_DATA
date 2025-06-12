@@ -119,15 +119,21 @@ st.markdown("""
             color: #000000 !important;
             font-weight: 500 !important;
             font-size: 1rem !important;
-        }
-        .stSelectbox > div[data-baseweb="select"] {
+        }        .stSelectbox > div[data-baseweb="select"] {
             background-color: #FFFFFF !important;
             border: 1px solid #90CAF9 !important;
         }
-        /* Make dropdown text darker */
+        /* Make dropdown text and background lighter */
         .stSelectbox [data-baseweb="select"] span {
-            color: #000000 !important;
+            color: #1976D2 !important;
             font-weight: 500 !important;
+        }
+        .stSelectbox [data-baseweb="popover"] {
+            background-color: #FFFFFF !important;
+        }
+        .stSelectbox [data-baseweb="select"] [data-testid="stMarkdownContainer"] {
+            background-color: #FFFFFF !important;
+            color: #1976D2 !important;
         }
         /* Ensure plot titles and labels are visible */
         .js-plotly-plot .plotly .gtitle,
@@ -236,14 +242,13 @@ if df is not None:
         if model is not None:
             st.subheader("🎯 Feature Importance")
             importance_df = get_feature_importance(model, df)
-            # Create a horizontal bar chart for feature importance
-            fig = px.bar(importance_df,
+            # Create a horizontal bar chart for feature importance                fig = px.bar(importance_df,
                 x='Importance', 
                 y='Feature',
                 orientation='h',
                 title='Feature Importance in Survival Prediction',
                 color='Importance',
-                color_continuous_scale=['#E3F2FD', '#90CAF9', '#2196F3'],
+                color_continuous_scale=['#90CAF9', '#1976D2', '#0D47A1'],
                 template='plotly_white')
             
             fig.update_layout(
@@ -382,12 +387,12 @@ if model:
                 value=25.0,
                 help="Enter passenger's age"
             )
-            
-            sibsp = st.number_input(
+              sibsp = st.number_input(
                 "Number of Siblings/Spouses",
                 min_value=0,
                 max_value=10,
                 value=0,
+                step=1,
                 help="Number of siblings or spouses aboard"
             )
             
@@ -396,6 +401,7 @@ if model:
                 min_value=0,
                 max_value=10,
                 value=0,
+                step=1,
                 help="Number of parents or children aboard"
             )
             
@@ -474,14 +480,13 @@ if model:
             # Show some visualizations when no prediction is made
             if df is not None:
                 st.markdown("### 📈 Survival Analysis")
-                # Age distribution plot
-                fig = px.histogram(df, x="Age", color="Survived", 
+                # Age distribution plot                fig = px.histogram(df, x="Age", color="Survived", 
                                  title="Age Distribution by Survival",
                                  labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
                                  barmode="overlay",
-                                 color_discrete_map={0: '#FFB6C1', 1: '#87CEEB'},
+                                 color_discrete_map={0: '#E53935', 1: '#43A047'},
                                  template='plotly_white',
-                                 opacity=0.8)
+                                 opacity=0.9)
                 
                 fig.update_layout(
                     plot_bgcolor='white',
@@ -512,13 +517,12 @@ if model:
                 fig.data[0].name = 'Did Not Survive'
                 fig.data[1].name = 'Survived'
                 st.plotly_chart(fig, use_container_width=True)
-                  # Survival rate by class
-                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
+                  # Survival rate by class                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
                 fig = px.bar(survival_by_class, 
                            title="Survival Rate by Passenger Class",
                            labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"},
                            color=survival_by_class.values,
-                           color_continuous_scale=['#E0F4FF', '#87CEEB', '#4682B4'],
+                           color_continuous_scale=['#1976D2', '#0D47A1', '#052C65'],
                            template='plotly_white')
                 
                 fig.update_layout(
