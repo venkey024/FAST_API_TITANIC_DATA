@@ -236,9 +236,9 @@ df = load_dataset()
 
 # Sidebar with dataset statistics
 if df is not None:
-    with st.sidebar:
-        st.header("📊 Dataset Statistics")
-          # Feature Importance
+    with st.sidebar:        st.header("📊 Dataset Statistics")
+        
+        # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
             importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance
@@ -307,9 +307,9 @@ if df is not None:
             st.subheader("👨‍👩‍👧‍👦 Family Size Impact")
             
             # Calculate survival rate by parch
-            parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()
-            parch_analysis['mean'] = parch_analysis['mean'] * 100
-              # Create visualization for survival rate by parch
+            parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()            parch_analysis['mean'] = parch_analysis['mean'] * 100
+            
+            # Create visualization for survival rate by parch
             fig = px.bar(parch_analysis, 
                 x='Parch', 
                 y='mean',
@@ -377,13 +377,14 @@ if model:
                 "Sex",
                 options=["Female", "Male"],
                 help="Select passenger's gender"
-            )
-            sex = 1 if sex == "Male" else 0
-              age = st.number_input(
+            )            sex = 1 if sex == "Male" else 0
+            
+            age = st.number_input(
                 "Age",
-                min_value=0.0,
-                max_value=100.0,
-                value=25.0,
+                min_value=0,
+                max_value=100,
+                value=25,
+                step=1,
                 help="Enter passenger's age"
             )
             
