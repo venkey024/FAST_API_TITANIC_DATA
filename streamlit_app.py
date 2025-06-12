@@ -88,7 +88,7 @@ def load_dataset():
         return None
 
 @st.cache_data
-def get_feature_importance(model, df):
+def get_feature_importance(_model, df):
     # Get feature names
     feature_names = ['Passenger Class', 'Sex', 'Age', 'Siblings/Spouses', 'Parents/Children', 'Fare']
     
