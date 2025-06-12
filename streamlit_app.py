@@ -241,8 +241,8 @@ if df is not None:
           # Feature Importance
         if model is not None:
             st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)
-            # Create a horizontal bar chart for feature importance                fig = px.bar(importance_df,
+            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance
+            fig = px.bar(importance_df,
                 x='Importance', 
                 y='Feature',
                 orientation='h',
