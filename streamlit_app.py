@@ -235,15 +235,16 @@ if df is not None:
         
         # Feature Importance
         if model is not None:
-            st.subheader("🎯 Feature Importance")
-            importance_df = get_feature_importance(model, df)            # Create a horizontal bar chart for feature importance            fig = px.bar(importance_df, 
-                        x='Importance', 
-                        y='Feature',
-                        orientation='h',
-                        title='Feature Importance in Survival Prediction',
-                        color='Importance',
-                        color_continuous_scale=['#E3F2FD', '#90CAF9', '#2196F3'],
-                        template='plotly_white')
+            st.subheader("🎯 Feature Importance")            importance_df = get_feature_importance(model, df)
+            # Create a horizontal bar chart for feature importance
+            fig = px.bar(importance_df, 
+                x='Importance', 
+                y='Feature',
+                orientation='h',
+                title='Feature Importance in Survival Prediction',
+                color='Importance',
+                color_continuous_scale=['#E3F2FD', '#90CAF9', '#2196F3'],
+                template='plotly_white')
             
             fig.update_layout(
                 xaxis_title="Importance Score",
