@@ -15,24 +15,23 @@ st.set_page_config(
 
 # Custom CSS
 st.markdown("""
-    <style>
-        .main {
+    <style>        .main {
             padding: 2rem;
             background-color: #F5F9FF;
-            color: #1A237E;
+            color: #000000;
         }
         [data-testid="stSidebar"] {
-            background-color: #EFF6FF;
-            color: #1A237E;
+            background-color: #E3F2FD;
+            color: #000000;
         }
         .title-container {
-            background: linear-gradient(135deg, #48CAE4 0%, #023E8A 100%);
+            background: linear-gradient(135deg, #64B5F6, #1976D2);
             padding: 2rem;
             border-radius: 10px;
             color: white;
             text-align: center;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
         .sidebar .element-container h1 {
             color: #1E88E5;
@@ -47,17 +46,16 @@ st.markdown("""
         .sidebar .element-container h3 {
             color: #0D47A1;
             font-size: 1.2rem;
-        }
-        .metric-container {
-            background-color: #E3F2FD;
+        }        .metric-container {
+            background-color: #90CAF9;
             padding: 1rem;
             border-radius: 8px;
             margin: 1rem 0;
-            color: #1A237E;
+            color: #000000;
         }
         .stButton>button {
             width: 100%;
-            background-color: #1E88E5;
+            background-color: #1976D2;
             color: white;
             font-weight: bold;
             padding: 0.5rem 1rem;
@@ -67,69 +65,93 @@ st.markdown("""
             border-radius: 10px;
             text-align: center;
             margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .survival-true {
-            background-color: #28a745;
+            background-color: #43A047;
             color: white;
         }
         .survival-false {
-            background-color: #dc3545;
+            background-color: #E53935;
             color: white;
-        }
-        .stats-box {
-            background-color: white;
+        }        .stats-box {
+            background-color: #BBDEFB;
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            color: #1A237E;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #000000;
         }
         [data-testid="stAppViewContainer"] {
             background-color: #F5F9FF;
-            color: #1A237E;
+            color: #000000;
         }
         .element-container {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: #E3F2FD;
             padding: 1rem;
             border-radius: 8px;
             margin: 0.5rem 0;
-            color: #1A237E;
+            color: #000000;
         }
         .stApp {
-            background: linear-gradient(135deg, #F5F9FF 0%, #EFF6FF 100%);
-            color: #1A237E;
-        }
-        /* Improve text contrast */
+            background: linear-gradient(135deg, #F5F9FF 0%, #E3F2FD 100%);
+            color: #000000;
+        }        /* Improve text contrast */
         .main, .stApp {
-            color: #1A237E !important;
+            color: #000000 !important;
         }
         /* Ensure text is visible in all containers */
         .element-container, .stats-box, .metric-container {
-            color: #1A237E !important;
+            color: #000000 !important;
         }
         /* Style for form labels and text inputs */
         .stTextInput label, .stTextInput input,
         .stNumberInput label, .stNumberInput input,
         .stSelectbox label, .stSelectbox > div[data-baseweb="select"] > div {
-            color: #1A237E !important;
+            color: #000000 !important;
         }
         /* Ensure plot titles and labels are visible */
         .js-plotly-plot .plotly .gtitle,
         .js-plotly-plot .plotly .xtitle,
         .js-plotly-plot .plotly .ytitle {
-            color: #1A237E !important;
+            color: #000000 !important;
         }
         /* Additional styles for better text visibility */
         .stMarkdown strong, .stMarkdown em {
-            color: #1A237E !important;
+            color: #000000 !important;
         }
         /* Table text visibility */
         .dataframe th {
-            color: #1A237E !important;
-            background-color: #E3F2FD !important;
+            color: #000000 !important;
+            background-color: #90CAF9 !important;
         }
         .dataframe td {
-            color: #1A237E !important;
+            color: #000000 !important;
+            background-color: #E3F2FD !important;
+        }
+        /* Additional styles for better sidebar visibility */
+        .sidebar .element-container h1 {
+            color: #000000 !important;
+        }
+        .sidebar .element-container h2 {
+            color: #000000 !important;
+        }
+        .sidebar .element-container h3 {
+            color: #000000 !important;
+        }
+        /* Style for metric values */
+        [data-testid="stMetricValue"] {
+            color: #000000 !important;
+        }
+        [data-testid="stMetricLabel"] {
+            color: #000000 !important;
+        }
+        /* Improve form field contrast */
+        .stSelectbox > div[data-baseweb="select"] {
+            background-color: #FFFFFF !important;
+        }
+        .stNumberInput input {
+            background-color: #FFFFFF !important;
         }
     </style>
 """, unsafe_allow_html=True)
