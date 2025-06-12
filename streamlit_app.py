@@ -87,6 +87,25 @@ def load_dataset():
         st.error(f"Error loading dataset: {str(e)}")
         return None
 
+@st.cache_data
+def get_feature_importance(model, df):
+    # Get feature names
+    feature_names = ['Passenger Class', 'Sex', 'Age', 'Siblings/Spouses', 'Parents/Children', 'Fare']
+    
+    # Get feature importance scores
+    importance_scores = model.feature_importances_
+    
+    # Create a DataFrame
+    importance_df = pd.DataFrame({
+        'Feature': feature_names,
+        'Importance': importance_scores
+    })
+    
+    # Sort by importance
+    importance_df = importance_df.sort_values('Importance', ascending=True)
+    
+    return importance_df
+
 model = load_model()
 df = load_dataset()
 
@@ -95,12 +114,59 @@ if df is not None:
     with st.sidebar:
         st.header("📊 Dataset Statistics")
         
-        # Survival Rate
+        # Feature Importance
+        if model is not None:
+            st.subheader("🎯 Feature Importance")
+            importance_df = get_feature_importance(model, df)
+            
+            # Create horizontal bar chart for feature importance
+            fig = px.bar(importance_df, 
+                        x='Importance', 
+                        y='Feature',
+                        orientation='h',
+                        title='Feature Importance in Survival Prediction')
+            
+            fig.update_layout(
+                xaxis_title="Importance Score",
+                yaxis_title="Feature",
+                height=400
+            )
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Detailed analysis of passenger class
+            st.subheader("🎫 Passenger Class Analysis")
+            
+            # Calculate survival rate by class
+            class_survival = df.groupby('Pclass')['Survived'].agg(['mean', 'count']).reset_index()
+            class_survival['mean'] = class_survival['mean'] * 100
+            class_survival['Pclass'] = class_survival['Pclass'].map({1: '1st Class', 2: '2nd Class', 3: '3rd Class'})
+            
+            # Create a bar chart with survival rates
+            fig = px.bar(class_survival, 
+                        x='Pclass', 
+                        y='mean',
+                        text=class_survival['mean'].round(1).astype(str) + '%',
+                        title='Survival Rate by Passenger Class',
+                        labels={'mean': 'Survival Rate (%)', 'Pclass': 'Passenger Class'})
+            
+            fig.update_traces(textposition='outside')
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Add text explanation
+            st.markdown("""
+            #### Key Findings:
+            - 1st Class passengers had significantly higher survival rates
+            - Class was one of the most important factors in survival
+            - Lower class passengers faced more challenging survival odds
+            """)
+        
+        # Original statistics
+        st.subheader("📈 General Statistics")
         survival_rate = df['Survived'].mean() * 100
         st.metric("Overall Survival Rate", f"{survival_rate:.1f}%")
         
         # Gender distribution
-        st.subheader("Gender Distribution")
+        st.subheader("👥 Gender Distribution")
         gender_fig = px.pie(df, names='Sex', title='Passengers by Gender')
         st.plotly_chart(gender_fig, use_container_width=True)
         
