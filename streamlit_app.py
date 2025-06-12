@@ -160,6 +160,52 @@ if df is not None:
             - Lower class passengers faced more challenging survival odds
             """)
         
+            # After Passenger Class Analysis, add Parents/Children Analysis
+            st.subheader("👨‍👩‍👧‍👦 Family Size Impact")
+            
+            # Calculate survival rate by parch
+            parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()
+            parch_analysis['mean'] = parch_analysis['mean'] * 100
+            
+            # Create visualization for survival rate by parch
+            fig = px.bar(parch_analysis, 
+                        x='Parch', 
+                        y='mean',
+                        text=parch_analysis['mean'].round(1).astype(str) + '%',
+                        title='Survival Rate by Number of Parents/Children',
+                        labels={'Parch': 'Number of Parents/Children', 'mean': 'Survival Rate (%)'},
+                        color='mean',
+                        color_continuous_scale='Blues')
+            
+            fig.update_traces(textposition='outside')
+            fig.update_layout(height=400)
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Add key insights about family size
+            st.markdown("""
+            #### Family Size Impact:
+            - 👶 Having 1-3 parents/children increased survival chances
+            - 👨‍👩‍👧‍👦 Optimal family size: 2-3 members
+            - ⚠️ Very large families (4+) had lower survival rates
+            - 🔍 Possible reasons:
+              * Families with children got priority
+              * Better group coordination
+              * Mutual support during crisis
+            """)
+            
+            # Show the detailed numbers
+            col1, col2 = st.columns(2)
+            with col1:
+                best_parch = parch_analysis.loc[parch_analysis['mean'].idxmax()]
+                st.metric("Best Survival Rate", 
+                         f"{best_parch['mean']:.1f}%",
+                         f"{best_parch['Parch']} family members")
+            with col2:
+                most_common = parch_analysis.loc[parch_analysis['count'].idxmax()]
+                st.metric("Most Common",
+                         f"{most_common['Parch']} family members",
+                         f"{most_common['count']} passengers")
+
         # Original statistics
         st.subheader("📈 General Statistics")
         survival_rate = df['Survived'].mean() * 100
