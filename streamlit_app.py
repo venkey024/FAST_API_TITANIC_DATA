@@ -236,7 +236,8 @@ df = load_dataset()
 
 # Sidebar with dataset statistics
 if df is not None:
-    with st.sidebar:        st.header("📊 Dataset Statistics")
+    with st.sidebar:
+        st.header("📊 Dataset Statistics")
         
         # Feature Importance
         if model is not None:
@@ -307,7 +308,8 @@ if df is not None:
             st.subheader("👨‍👩‍👧‍👦 Family Size Impact")
             
             # Calculate survival rate by parch
-            parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()            parch_analysis['mean'] = parch_analysis['mean'] * 100
+            parch_analysis = df.groupby('Parch')['Survived'].agg(['mean', 'count']).reset_index()
+            parch_analysis['mean'] = parch_analysis['mean'] * 100
             
             # Create visualization for survival rate by parch
             fig = px.bar(parch_analysis, 
@@ -377,7 +379,8 @@ if model:
                 "Sex",
                 options=["Female", "Male"],
                 help="Select passenger's gender"
-            )            sex = 1 if sex == "Male" else 0
+            )
+            sex = 1 if sex == "Male" else 0
             
             age = st.number_input(
                 "Age",
@@ -396,8 +399,7 @@ if model:
                 step=1,
                 help="Number of siblings or spouses aboard"
             )
-            
-            parch = st.number_input(
+              parch = st.number_input(
                 "Number of Parents/Children",
                 min_value=0,
                 max_value=10,
@@ -410,6 +412,7 @@ if model:
                 "Fare ($)",
                 min_value=0.0,
                 value=32.0,
+                step=1.0,
                 help="Passenger fare"
             )
 
@@ -482,8 +485,8 @@ if model:
             if df is not None:
                 st.markdown("### 📈 Survival Analysis")
                 # Age distribution plot                fig = px.histogram(df, x="Age", color="Survived", 
-                                 title="Age Distribution by Survival",
-                                 labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
+                    title="Age Distribution by Survival",
+                    labels={"Survived": "Survival Status", "Age": "Age (years)", "count": "Number of Passengers"},
                                  barmode="overlay",
                                  color_discrete_map={0: '#E53935', 1: '#43A047'},
                                  template='plotly_white',
@@ -518,7 +521,8 @@ if model:
                 fig.data[0].name = 'Did Not Survive'
                 fig.data[1].name = 'Survived'
                 st.plotly_chart(fig, use_container_width=True)
-                  # Survival rate by class                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
+                # Survival rate by class
+                survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
                 fig = px.bar(survival_by_class, 
                            title="Survival Rate by Passenger Class",
                            labels={"value": "Survival Rate (%)", "Pclass": "Passenger Class"},
